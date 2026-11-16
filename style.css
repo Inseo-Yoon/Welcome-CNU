@@ -1,0 +1,1004 @@
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_corp@1.0/합니다체.woff'); 
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/BMJua.woff'); 
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2107@1.1/gmarket.woff');
+
+/* ================================
+   전체 공통 스타일
+================================ */
+body {
+  margin: 0;
+  font-family: 'BMJua', 'GmarketSansBold', sans-serif; 
+  background-color: #f7fcf9; 
+  color: #333;
+  line-height: 1.6;
+}
+
+h1, h2, h3, button, .btn-go, .nickname {
+  font-family: 'BMJua', 'GmarketSansBold', sans-serif;
+  color: #0077c8;
+}
+
+/* 헤더 (로그인, 회원가입 버튼 포함) - 색상 통일 */
+header {
+  background-color: white; 
+  color: #004b8d;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 5px solid #a8d5ff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #0077c8;
+}
+
+header nav a {
+  color: #0077c8;
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s, background-color 0.2s;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+header nav a:hover {
+  background-color: #e6f0ff;
+  color: #004b8d;
+}
+
+/* 푸터 - 색상 통일 */
+footer {
+  text-align: center;
+  padding: 15px;
+  color: #0077c8;
+  font-size: 0.9rem;
+  border-top: 3px dashed #a8d5ff;
+}
+
+/* ================================
+   캠퍼스맵 페이지 (index.html)
+================================ */
+.map-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+  overflow: hidden; /* 캐릭터가 맵 밖으로 나가지 않도록 */
+}
+
+.campus-map {
+  width: 100%;
+  display: block;
+  border: 10px solid #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 플레이어 캐릭터 */
+.player-character {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid #ff8000;
+  box-shadow: 0 4px 12px rgba(255, 128, 0, 0.6), 
+              0 0 20px rgba(255, 128, 0, 0.4);
+  z-index: 1000;
+  transition: all 0.15s ease-out;
+  cursor: move;
+  animation: playerPulse 2s ease-in-out infinite;
+}
+
+/* 캐릭터 펄스 애니메이션 */
+@keyframes playerPulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(255, 128, 0, 0.6), 
+                0 0 20px rgba(255, 128, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(255, 128, 0, 0.8), 
+                0 0 30px rgba(255, 128, 0, 0.6);
+  }
+}
+
+/* 모바일 컨트롤 */
+.mobile-controls {
+  display: none; /* 기본적으로 숨김 (모바일에서만 표시) */
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 2000;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-row {
+  display: flex;
+  gap: 8px;
+}
+
+.control-btn {
+  width: 55px;
+  height: 55px;
+  background: rgba(0, 119, 200, 0.9);
+  border: 3px solid white;
+  border-radius: 12px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.control-btn:active {
+  background: rgba(255, 128, 0, 0.9);
+  transform: scale(0.95);
+}
+
+/* 건물 텍스트 - 크기 10px로 최종 축소 */
+.building-label {
+  position: absolute;
+  color: #fff;
+  background-color: rgba(72, 137, 212, 0.85);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px; /* 최종 크기 반영 */
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: not-allowed;
+  transition: all 0.3s;
+  box-shadow: 0 2px 0 rgba(0, 75, 141, 0.6), 0 4px 8px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  opacity: 0.85;
+  pointer-events: none !important; /* 기본적으로 클릭 불가 */
+}
+
+/* 방문한 건물 */
+.building-label.visited {
+  background-color: rgba(139, 195, 74, 0.85) !important;
+  border-color: rgba(139, 195, 74, 1);
+  box-shadow: 0 2px 0 rgba(104, 159, 56, 0.6), 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* 캐릭터가 근처에 있을 때 */
+.building-label.nearby {
+  background-color: rgba(255, 128, 0, 0.95) !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  transform: translateY(-4px) scale(1.2);
+  box-shadow: 0 5px 0 #cc6600, 0 8px 15px rgba(255, 128, 0, 0.6);
+  border: 2px solid white !important;
+  animation: buildingPulse 1.5s ease-in-out infinite;
+}
+
+/* 방문한 건물이면서 근처에 있을 때 (주황색 유지) */
+.building-label.visited.nearby {
+  background-color: rgba(255, 128, 0, 0.95) !important;
+}
+
+/* 근처 건물 펄스 애니메이션 */
+@keyframes buildingPulse {
+  0%, 100% {
+    box-shadow: 0 5px 0 #cc6600, 0 8px 15px rgba(255, 128, 0, 0.6);
+  }
+  50% {
+    box-shadow: 0 5px 0 #cc6600, 0 8px 20px rgba(255, 128, 0, 0.9);
+  }
+}
+
+.building-label.nearby:hover {
+  background-color: rgba(255, 170, 0, 1) !important;
+  transform: translateY(-6px) scale(1.25);
+  box-shadow: 0 6px 0 #cc6600, 0 10px 20px rgba(255, 128, 0, 0.8);
+}
+
+/* 지도용 좌표 (9280x6373 기준) - 기존 좌표 유지 */
+#본부 { top: 34.9%; left: 56.3%; }
+#본부별관 { top: 37.8%; left: 59.7%; }
+#경상대학 { top: 43.8%; left: 62.2%; }
+#인재개발원 { top: 50.9%; left: 64.3%; }
+#융합교육혁신센터 { top: 55.4%; left: 69.0%; }
+#공3 { top: 45.8%; left: 75.3%; }
+#공2 { top: 62.3%; left: 76.6%; }
+#정심화 { top: 70.2%; left: 85.5%; }
+#농공학관 { top: 32.6%; left: 70.1%; }
+#상록회관 { top: 24.5%; left: 77.8%; }
+#농생1 { top: 15.4%; left: 81.3%; }
+#농생23 { top: 12.2%; left: 74.7%; }
+#농과기센터 { top: 15.6%; left: 89.5%; }
+#사범대 { top: 53.8%; left: 10.1%; }
+#공동실험실습관 { top: 52.4%; left: 15.1%; }
+#백마교양관 { top: 59.5%; left: 14.8%; }
+#자연4 { top: 65.3%; left: 15.1%; }
+#자연3 { top: 72.0%; left: 17.6%; }
+#인문대 { top: 52.0%; left: 24.7%; }
+#학생회관1 { top: 53.4%; left: 31.0%; }
+#한누리 { top: 56.4%; left: 30.7%; }
+#사회강의동 { top: 63.2%; left: 31.8%; }
+#사회대 { top: 65.4%; left: 34.5%; }
+#노천극장 { top: 76.3%; left: 39.1%; }
+#약초원 { top: 80.8%; left: 41.4%; }
+#자연2 { top: 38.5%; left: 26.7%; }
+#자연1 { top: 41.5%; left: 29.8%; }
+#약대 { top: 44.5%; left: 31.0%; }
+#공1 { top: 49.3%; left: 45.2%; }
+#공5 { top: 54.3%; left: 50.0%; }
+#산학연 { top: 61.2%; left: 55.1%; }
+#수의대 { top: 7.5%; left: 5.8%; }
+#생활과학대 { top: 12.8%; left: 2.9%; }
+#생명시스템 { top: 12.2%; left: 9.3%; }
+#체육관 { top: 36.7%; left: 10.7%; }
+#법학전문대학원 { top: 4.4%; left: 15.3%; }
+#음대1 { top: 21.0%; left: 23.0%; }
+#음대2 { top: 17.9%; left: 21.5%; }
+#오케스트라홀 { top: 25.0%; left: 23.6%; }
+#디자인관 { top: 28.4%; left: 20.2%; }
+#미술관 { top: 32.1%; left: 22.7%; }
+#학생회관3 { top: 29.1%; left: 30.4%; }
+#학생생활관 { top: 12.1%; left: 33.6%; }
+#정보화본부 { top: 26.8%; left: 48.6%; }
+#도서관 { top: 31.4%; left: 41.4%; }
+#정문 { top: 82.5%; left: 77.3%; }
+#카이스트길 { top: 11.7%; left: 87.4%; }           
+#공5지름길 { top: 58.3%; left: 41.0%; }             
+#굴다리방향 { top: 84.6%; left: 43.7%; }            
+#서문 { top: 47.7%; left: 5.3%; }                    
+#테니스장1 { top: 36.2%; left: 16.3%; }              
+#테니스장2 { top: 16.6%; left: 9.3%; }               
+#축구장 { top: 18.7%; left: 4.4%; }                  
+#풋살장 { top: 20.7%; left: 9.7%; }                  
+#북부운동장 { top: 25.2%; left: 8.7%; }            
+#기숙사법대길 { top: 8.8%; left: 22.7%; }            
+#남부운동장 { top: 71.1%; left: 58.6%; }                           
+#쪽문 { top: 63.6%; left: 92.0%; }                   
+#공4 { top: 51.0%; left: 80.9%; }
+#영탑지 { top: 41.3%; left: 41.9%; }       
+#막동 { top: 41.0%; left: 38.3%; }          
+#백마상 { top: 50.5%; left: 60.0%; }       
+#파빌리온 { top: 79.6%; left: 79.4%; }        
+
+
+/* ================================
+   로그인 / 회원가입 페이지
+================================ */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  min-height: 100vh;
+  padding: 40px 0;
+  background: #a8d5ff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="10" cy="10" r="2" fill="%23ccf2ff"/><circle cx="30" cy="30" r="2" fill="%23ccf2ff"/></svg>') repeat;
+  background-size: 40px 40px;
+}
+
+
+.auth-container {
+  background: white;
+  padding: 40px 50px;
+  border-radius: 30px; 
+  width: 350px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  border: 5px solid #ffaa00; 
+  text-align: center;
+}
+
+.auth-container h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: #0077c8;
+}
+
+.auth-container label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #0077c8;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border-radius: 15px;
+  border: 3px solid #ccc;
+  box-sizing: border-box;
+  font-family: 'GmarketSansMedium', sans-serif;
+}
+
+.auth-container button {
+  width: 100%;
+  margin-top: 30px;
+  background-color: #ff8000;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: 0.2s;
+  box-shadow: 0 5px 0 #cc6600;
+}
+
+.auth-container button:hover {
+  background-color: #ffaa00;
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #cc6600;
+}
+
+.auth-container a {
+  color: #0077c8;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.auth-container p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ================================
+   캐릭터 선택 페이지
+================================ */
+.select-page {
+  background-color: #fff2cc;
+  padding: 40px;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.select-container h2 {
+  font-size: 2.2rem;
+  color: #0077c8;
+}
+
+.character-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+/* 개별 캐릭터 카드 */
+.char-card {
+  background: white;
+  padding: 25px 15px;
+  border-radius: 20px;
+  width: 130px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 4px solid #0077c8;
+}
+
+.char-card:hover {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.char-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.char-card p {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #0077c8;
+  font-size: 1.1rem;
+}
+
+/* 선택 완료 버튼 */
+.btn-go {
+  display: inline-block;
+  margin-top: 40px;
+  background: #0077c8;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+  font-weight: bold;
+  font-size: 1.2rem;
+  box-shadow: 0 5px 0 #004b8d;
+}
+
+.btn-go:hover {
+  background-color: #004b8d;
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #004b8d;
+}
+
+/* 회원가입 페이지 인라인 캐릭터 선택 */
+.character-select-inline {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.character-select-inline label {
+  background: #e6f0ff; 
+  border-radius: 20px;
+  padding: 15px 10px;
+  border: 3px dashed #0077c8; 
+}
+
+.character-select-inline input[type="radio"] {
+  display: none;
+}
+
+.character-select-inline input[type="radio"]:checked + img {
+  border: 5px solid #ff8000; 
+  box-shadow: 0 0 15px rgba(255, 128, 0, 0.9);
+  transform: scale(1.15);
+}
+
+.character-select-inline img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid white;
+  transition: all 0.2s;
+}
+
+.character-select-inline p {
+  margin: 0;
+  font-weight: bold;
+  color: #0077c8;
+  text-align: center;
+}
+
+/* ================================
+   마이페이지 스타일
+================================ */
+.mypage {
+  background-color: #d0e0f0; 
+  min-height: 100vh;
+}
+
+.mypage-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding: 30px;
+  text-align: center;
+  border: 6px solid #0077c8;
+}
+
+.profile-card img.profile-character {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  border: 8px solid #a8d5ff;
+  box-shadow: 0 0 0 4px #ff8000;
+}
+
+.profile-card h2 {
+  font-size: 1.8rem;
+  margin: 10px 0 25px;
+  color: #ff8000;
+}
+
+.level-box {
+  margin-top: 10px;
+  background: #e6f0ff;
+  padding: 20px;
+  border-radius: 20px;
+  border: 3px dashed #ff8000;
+}
+
+.level-box p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.level-bar {
+  background-color: #ccc;
+  height: 25px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+  margin: 8px 0;
+}
+
+.level-fill {
+  background-color: #0077c8; /* 색칠될 색상 */
+  height: 100%;
+  width: 0%; /* <-- 이 부분이 인라인 스타일의 기준점이 됩니다. */
+  transition: width 0.5s ease;
+  border-radius: 12px 0 0 12px;
+}
+
+.exp-text {
+  color: #ff8000;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* 업적 목록 */
+.activity-section {
+  text-align: left;
+  margin-top: 30px;
+}
+
+.activity-section h3 {
+  font-size: 1.5rem;
+  color: #0077c8;
+  padding-bottom: 5px;
+}
+
+.activity-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.activity-section li {
+  background: #fff2cc;
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-weight: bold;
+  border-left: 10px solid #0077c8;
+  transition: transform 0.1s;
+}
+
+.activity-section li:hover {
+    transform: translateX(5px);
+}
+
+/* ================================
+   📱 반응형 웹 설정
+================================ */
+
+/* 1️⃣ 작은 노트북 & 태블릿 (가로폭 1024px 이하) */
+@media (max-width: 1024px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  header nav a {
+    margin: 5px 10px;
+    display: inline-block;
+  }
+
+  .map-container {
+    max-width: 95%;
+  }
+
+  .mypage-container {
+    width: 90%;
+  }
+
+  .character-list {
+    gap: 20px;
+  }
+}
+
+/* 2️⃣ 모바일 (가로폭 768px 이하) */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  header h1 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  header nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  header nav a {
+    margin: 4px;
+    font-size: 0.9rem;
+  }
+
+  /* 모바일에서 컨트롤 표시 */
+  .mobile-controls {
+    display: flex !important;
+  }
+
+  /* 모바일에서 캐릭터 크기 조정 */
+  .player-character {
+    width: 45px;
+    height: 45px;
+  }
+
+  /* 로그인 / 회원가입 */
+  .auth-container {
+    width: 85%;
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+  
+  .auth-container input {
+    border-radius: 10px;
+  }
+  
+  .auth-container button {
+    border-radius: 15px;
+    padding: 12px;
+  }
+
+  /* 캐릭터 선택 페이지 */
+  .character-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .char-card {
+    width: 40%;
+    max-width: 200px;
+    padding: 15px 10px;
+  }
+
+  /* 회원가입 내 캐릭터 선택 */
+  .character-select-inline {
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .character-select-inline label {
+    width: 70px;
+    padding: 8px 5px;
+    border-radius: 12px;
+  }
+
+  .character-select-inline img {
+    width: 45px;
+    height: 45px;
+  }
+
+  /* 마이페이지 */
+  .mypage-container {
+    width: 90%;
+    padding: 20px;
+    border-radius: 20px;
+  }
+  
+  .profile-card img.profile-character {
+    width: 90px;
+    height: 90px;
+  }
+
+  .level-bar {
+    height: 16px;
+  }
+
+  .activity-section li {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+  }
+}
+
+/* 3️⃣ 초소형 화면 (가로폭 480px 이하, 스마트폰) */
+@media (max-width: 480px) {
+  header nav a {
+    font-size: 0.8rem;
+  }
+
+  .auth-container h2 {
+    font-size: 1.1rem;
+  }
+
+  .char-card {
+    width: 90%;
+  }
+
+  .profile-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .activity-section li {
+    padding: 8px;
+  }
+}
+
+/* ===========================
+      팝업(건물 정보창) 스타일
+=========================== */
+
+/* 팝업 배경 오버레이 */
+.popup-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  z-index: 9998 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 팝업 메인 */
+.popup {
+  position: fixed !important;       /* 화면 기준 고정 */
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;  /* 화면 정중앙 */
+  background: white !important;
+  padding: 25px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+  z-index: 9999 !important;         /* 최상위 표시 */
+  width: 400px !important;
+  max-width: 90vw !important;       /* 모바일 대응 */
+  max-height: 80vh !important;
+  overflow-y: auto !important;
+  text-align: center !important;
+  border: 5px solid #0077c8 !important;
+}
+
+.popup h3 {
+  color: #0077c8 !important;
+  font-size: 1.5rem !important;
+  margin-bottom: 15px !important;
+  margin-top: 0 !important;
+}
+
+.popup p {
+  color: #333 !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  margin: 10px 0 !important;
+}
+
+.popup-content img.popup-img {
+  width: 100% !important;
+  border-radius: 12px !important;
+  margin: 15px 0 !important;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;
+}
+
+/* 닫기 버튼 */
+.popup .close-btn {
+  margin-top: 20px !important;
+  padding: 12px 30px !important;
+  border: none !important;
+  background: #0077c8 !important;
+  color: white !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  transition: all 0.2s !important;
+  box-shadow: 0 4px 0 #004b8d !important;
+}
+
+.popup .close-btn:hover {
+  background: #004b8d !important;
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 #004b8d !important;
+}
+
+/* 퀴즈 섹션 */
+.quiz-section {
+  margin-top: 20px !important;
+  padding: 15px !important;
+  background: #f0f8ff !important;
+  border-radius: 12px !important;
+  border: 3px dashed #0077c8 !important;
+}
+
+.quiz-section p {
+  font-weight: bold !important;
+  color: #0077c8 !important;
+  margin-bottom: 15px !important;
+}
+
+/* 퀴즈 버튼 */
+.quiz-section .quiz-option {
+  display: inline-block !important;
+  margin: 8px 5px !important;
+  padding: 10px 15px !important;
+  background: white !important;
+  border: 3px solid #0077c8 !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+  color: #0077c8 !important;
+  transition: all 0.2s !important;
+}
+
+.quiz-section .quiz-option:hover {
+  background: #0077c8 !important;
+  color: white !important;
+  transform: scale(1.05) !important;
+}
+
+/* 이미 푼 퀴즈 스타일 */
+.quiz-solved {
+  background: #e8f5e9 !important;
+  padding: 15px !important;
+  border-radius: 10px !important;
+  margin-top: 10px !important;
+  border: 3px solid #4CAF50 !important;
+}
+
+.solved-message {
+  color: #2e7d32 !important;
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+  margin: 5px 0 !important;
+}
+
+.correct-answer {
+  color: #1b5e20 !important;
+  font-size: 1.1rem !important;
+  margin: 10px 0 5px 0 !important;
+}
+
+.correct-answer strong {
+  color: #ff8000 !important;
+  font-size: 1.2rem !important;
+}
+
+/* ============================
+   🟦 마이페이지 스타일
+============================ */
+
+.mypage-container {
+  max-width: 520px;
+  margin: 80px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.profile-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  margin-bottom: 30px;
+}
+
+.profile-character {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.nickname {
+  margin-bottom: 10px;
+}
+
+.level-section {
+  margin-top: 12px;
+}
+
+.level-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.level-bar {
+  width: 100%;
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.level-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #6ec3ff, #3c7cff);
+  transition: width .3s;
+}
+
+.exp-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.badge-section {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.badge-desc {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.badge-item {
+  background: linear-gradient(135deg, #fff3c4, #ffe29f);
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #f2c94c;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.badge-empty {
+  font-size: 13px;
+  color: #777;
+}
+
+/* ============================
+   🎉 전체 클리어 축하 애니메이션
+============================ */
+
+.full-clear-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  animation: overlayFadeIn 0.4s ease-out;
+}
+
+.full-clear-overlay.hide {
+  animation: overlayFadeOut 0.5s ease-in forwards;
+}
+
+.full-clear-message {
+  background: #ffffff;
+  padding: 24px 28px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  animation: popIn 0.5s ease-out;
+}
+
+.full-clear-message h2 {
+  margin-bottom: 8px;
+}
+
+.full-clear-message p {
+  font-size: 14px;
+  color: #444;
+}
+
+/* 애니메이션 키프레임 */
+@keyframes popIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes overlayFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CNUtour - 캠퍼스 지도</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>CNUtour - 충남대학교 캠퍼스 투어</h1>
+    <nav>
+      <a href="my.html">마이페이지</a>
+      <a href="select.html">캐릭터 선택</a>
+      <a href="login.html">로그아웃</a>
+    </nav>
+  </header>
+
+  <main class="map-container">
+    <img src="images/campus_map.jpg" alt="충남대학교 지도" class="campus-map">
+
+    <!-- 플레이어 캐릭터 -->
+    <img id="player" class="player-character" src="" alt="플레이어">
+
+    <!-- 건물 텍스트 라벨 -->
+    <div class="building-label" id="본부">대학본부</div>
+    <div class="building-label" id="본부별관">대학본부 별관</div>
+    <div class="building-label" id="경상대학">경상대학</div>
+    <div class="building-label" id="인재개발원">인재개발원</div>
+    <div class="building-label" id="융합교육혁신센터">융합교육혁신센터</div>
+    <div class="building-label" id="공3">공과대학 3호관</div>
+    <div class="building-label" id="공2">공과대학 2호관</div>
+    <div class="building-label" id="정심화">정심화국제문화회관</div>
+    <div class="building-label" id="농공학관">농업생명공학관</div>
+    <div class="building-label" id="상록회관">상록회관</div>
+    <div class="building-label" id="농생1">농생대 1호관</div>
+    <div class="building-label" id="농생23">농생대 2,3호관</div>
+    <div class="building-label" id="농과기센터">농업과학기술센터</div>
+    <div class="building-label" id="사범대">사범대학</div>
+    <div class="building-label" id="공동실험실습관">공동실험실습관</div>
+    <div class="building-label" id="백마교양관">백마교양교육관</div>
+    <div class="building-label" id="자연4">자연과학대학 4호관</div>
+    <div class="building-label" id="자연3">자연과학대학 3호관</div>
+    <div class="building-label" id="인문대">인문대학</div>
+    <div class="building-label" id="학생회관1">제1학생회관</div>
+    <div class="building-label" id="한누리">한누리회관</div>
+    <div class="building-label" id="사회강의동">사회과학대학 강의동</div>
+    <div class="building-label" id="사회대">사회과학대학</div>
+    <div class="building-label" id="노천극장">노천극장</div>
+    <div class="building-label" id="약초원">약초원 관리동</div>
+    <div class="building-label" id="자연2">자연과학대학 2호관</div>
+    <div class="building-label" id="자연1">자연과학대학 1호관</div>
+    <div class="building-label" id="약대">약학대학</div>
+    <div class="building-label" id="공1">공과대학 1호관</div>
+    <div class="building-label" id="공5">공과대학 5호관</div>
+    <div class="building-label" id="산학연">산학연교육연구관</div>
+    <div class="building-label" id="수의대">수의과대학</div>
+    <div class="building-label" id="생활과학대">생활과학대학</div>
+    <div class="building-label" id="생명시스템">생명시스템과학대학</div>
+    <div class="building-label" id="체육관">실내체육관</div>
+    <div class="building-label" id="법학전문대학원">법학전문대학원</div>
+    <div class="building-label" id="음대1">음대 1호관</div>
+    <div class="building-label" id="음대2">음대 2호관</div>
+    <div class="building-label" id="오케스트라홀">오케스트라홀</div>
+    <div class="building-label" id="디자인관">예술대 디자인관</div>
+    <div class="building-label" id="미술관">예술대 미술관</div>
+    <div class="building-label" id="학생회관3">제3학생회관</div>
+    <div class="building-label" id="학생생활관">학생생활관</div>
+    <div class="building-label" id="정보화본부">정보화본부</div>
+    <div class="building-label" id="도서관">도서관</div>
+    <div class="building-label" id="정문">정문</div>
+    <div class="building-label" id="카이스트길">카이스트 가는 길</div>
+    <div class="building-label" id="공5지름길">공5 지름길</div>
+    <div class="building-label" id="굴다리방향">굴다리 방향</div>
+    <div class="building-label" id="서문">서문</div>
+    <div class="building-label" id="테니스장1">테니스장 1</div>
+    <div class="building-label" id="테니스장2">테니스장 2</div>
+    <div class="building-label" id="축구장">축구장</div>
+    <div class="building-label" id="풋살장">풋살장</div>
+    <div class="building-label" id="북부운동장">북부운동장</div>
+    <div class="building-label" id="기숙사법대길">기숙사↔법대 지름길</div>
+    <div class="building-label" id="남부운동장">남부운동장</div>
+    <div class="building-label" id="쪽문">쪽문 (궁동가는 길)</div>
+    <div class="building-label" id="공4">공과대학 4호관</div>
+    <div class="building-label" id="영탑지">영탑지</div>
+    <div class="building-label" id="막동">막동</div>
+    <div class="building-label" id="백마상">백마상</div>
+    <div class="building-label" id="파빌리온">파빌리온</div>
+
+    <!-- 모바일 컨트롤 -->
+    <div class="mobile-controls">
+      <div class="control-row">
+        <button class="control-btn" data-direction="up">▲</button>
+      </div>
+      <div class="control-row">
+        <button class="control-btn" data-direction="left">◀</button>
+        <button class="control-btn" data-direction="down">▼</button>
+        <button class="control-btn" data-direction="right">▶</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 CNUtour</p>
+  </footer>
+<script src="js/main.js"></script>
+<a href="#" id="logout-btn">로그아웃</a>
+</body>
+</html>

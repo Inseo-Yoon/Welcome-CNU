@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인 | CNUtour</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <h2>로그인</h2>
+    
+    <!-- ✅ 기존 goToMain 삭제하고, id 부여 -->
+    <form id="loginForm" autocomplete="off">
+      <label for="email">이메일</label>
+      <input type="email" id="email" placeholder="이메일 입력" required autocomplete="off">
+
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="비밀번호 입력" required autocomplete="new-password">
+
+      <button type="submit">로그인</button>
+    </form>
+
+    <p>계정이 없으신가요? <a href="signup.html">회원가입</a></p>
+  </div>
+
+  <!-- ✅ 임시 스크립트(goToMain) 완전히 제거 -->
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>회원가입 | CNUtour</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-container">
+    <h2>회원가입</h2>
+    <form onsubmit="return goToLogin(event)">
+      <label for="name">이름</label>
+      <input type="text" id="name" placeholder="이름 입력" required>
+
+      <label for="nickname">닉네임</label>
+      <input type="text" id="nickname" placeholder="닉네임 입력 (마이페이지에 표시됨)" required>
+
+      <label for="email">이메일</label>
+      <input type="email" id="email" placeholder="이메일 입력" 
+       required autocomplete="off">
+
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" placeholder="비밀번호 입력"
+       required autocomplete="new-password">
+
+
+      <label>캐릭터 선택</label>
+      <div class="character-select-inline">
+        <label><input type="radio" name="char" value="1" required><img src="images/char1.png" alt="학생"><p>학생</p></label>
+        <label><input type="radio" name="char" value="2"><img src="images/char2.png" alt="펭귄"><p>펭귄</p></label>
+        <label><input type="radio" name="char" value="3"><img src="images/char3.png" alt="여우"><p>여우</p></label>
+        <label><input type="radio" name="char" value="4"><img src="images/char4.png" alt="유령"><p>유령</p></label>
+        <label><input type="radio" name="char" value="5"><img src="images/char5.png" alt="강아지"><p>강아지</p></label>
+      </div>
+
+      <button type="submit">가입하기</button>
+    </form>
+
+    <p>이미 계정이 있으신가요? <a href="login.html">로그인</a></p>
+  </div>
+
+  <script>
+    function goToLogin(event) {
+      event.preventDefault();
+      alert("회원가입이 완료되었습니다! 로그인해주세요.");
+      window.location.href = "login.html";
+    }
+  </script>
+<script src="js/main.js"></script>
+</body>
+</html>

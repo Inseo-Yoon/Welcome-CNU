@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>마이페이지 | CNUtour</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mypage">
+
+  <header>
+    <h1>CNUtour 마이페이지</h1>
+    <nav>
+      <a href="index.html">지도</a>
+      <a href="select.html">캐릭터 선택</a>
+      <a href="#" id="logout-btn">로그아웃</a>
+    </nav>
+  </header>
+
+  <main class="mypage-container">
+
+    <!-- 프로필 카드 -->
+    <section class="profile-card">
+      <img class="profile-character" src="images/char1.png" alt="캐릭터">
+      <h2 class="nickname">닉네임: </h2>
+
+      <div class="level-section">
+        <p class="level-title">
+          LEVEL <span id="level-number">1</span>
+        </p>
+        <div class="level-bar">
+          <div class="level-fill"></div>
+        </div>
+        <p class="exp-text">경험치: 0 / 100</p>
+      </div>
+    </section>
+
+    <!-- 뱃지 섹션 -->
+    <section class="badge-section">
+      <h3>🏅 획득한 뱃지</h3>
+      <p class="badge-desc">캠퍼스를 돌아다니며 퀴즈를 풀면 뱃지를 모을 수 있어요!</p>
+      <div class="badge-list" id="badge-list">
+        <!-- JS에서 채워짐 -->
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
